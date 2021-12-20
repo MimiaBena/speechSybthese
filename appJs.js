@@ -1,13 +1,13 @@
 //variable declaration
 
-const text = document.querySelector('.text');
+const textOption = document.querySelector('.text');
 const voiceSelector = document.querySelector('.voiceOption');
-const volume = document.querySelector('.volumeOption');
-const rate = document.querySelector('.rateOption');
-const pitch = document.querySelector('.pitchOption');
+const volumeOption = document.querySelector('.volumeOption');
+const rateOption = document.querySelector('.rateOption');
+const pitchOption = document.querySelector('.pitchOption');
 const speakButton = document.querySelector('.speakButton');
 const stopButton = document.querySelector('.stopButton');
-
+var synth = window.speechSynthesis;
 
 
 //function get Voices
@@ -34,35 +34,41 @@ function loadVoice(){
     
 }
 //excute load function
-//loadVoice();
+loadVoice();
 window.speechSynthesis.onvoiceschanged = function(e) {
   loadVoice();
 };
 //create text and control parameters
-function parameters(text){
+var msg = new SpeechSynthesisUtterance();
+function parameters(textOption){
     /*new instance représente
     une requète de synthèse vocale. Elle contient le contenu du service permettant de définir la façon dont elle sera lu (langue, hauteur et volume).*/
-    var msg = new SpeechSynthesisUtterance();
+    
   
   // Set the text.
-	msg.text = text;
+	msg.text = textOption;
     
     //set volume ant pitch
-    msg.volume = parseFloat(volume.value);
-    msg.rate = parseFloat(rate.value);
-    msg.pitch = parseFloat(pitch.value);
+    msg.volume = parseFloat(volumeOption.value);
+    msg.rate = parseFloat(rateOption.value);
+    msg.pitch = parseFloat(pitchOption.value);
     
     if (voiceSelector.value) {
-		msg.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == voiceSelector.value; })[0];
+		msg.voice = speechSynthesis.getVoices().filter(function(voice) { 
+                return voice.name == voiceSelector.value;})[0];
 	}
   
   // Queue this utterance.
-	window.speechSynthesis.speak(msg);
+	synth.speak(msg);
+}
 
+function stopSpeech(){
+    synth.cancel();
 }
 
 speakButton.addEventListener('click', function(e){
-    if (text.value.length > 0) {
-		parameters(text.value);
+    if (textOption.value.length > 0) {
+		parameters(textOption.value, start = true);
 	}
 });
+stopButton.addEventListener('click', function(e){stopSpeech()});
