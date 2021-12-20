@@ -7,13 +7,14 @@ const rateOption = document.querySelector('.rateOption');
 const pitchOption = document.querySelector('.pitchOption');
 const speakButton = document.querySelector('.speakButton');
 const stopButton = document.querySelector('.stopButton');
-var synth = window.speechSynthesis;
+const msg = new SpeechSynthesisUtterance();
+const synth = window.speechSynthesis;
 
-
+ let voices = [];
 //function get Voices
 
 function loadVoice(){
-    let voices = [];
+   
     //get the voices
     voices = speechSynthesis.getVoices();
     ///console.log(voices);
@@ -39,12 +40,11 @@ window.speechSynthesis.onvoiceschanged = function(e) {
   loadVoice();
 };
 //create text and control parameters
-var msg = new SpeechSynthesisUtterance();
+
 function parameters(textOption){
     /*new instance représente
     une requète de synthèse vocale. Elle contient le contenu du service permettant de définir la façon dont elle sera lu (langue, hauteur et volume).*/
-    
-  
+
   // Set the text.
 	msg.text = textOption;
     
